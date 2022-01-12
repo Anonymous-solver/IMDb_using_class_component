@@ -12,7 +12,8 @@ class Movies extends Component {
         title: "The Shawshank Redemption (1994)",
         imdb_rating: "9.2",
         your_rating: false,
-		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>
+		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>,
+		add: <i class="fa fa-plus-circle"></i>
       },
       {
 		image: img,  
@@ -20,7 +21,8 @@ class Movies extends Component {
         title: "The Godfather (1972)",
         imdb_rating: "9.5",
         your_rating: false,
-		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>
+		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>,
+		add: <i class="fa fa-plus-circle"></i>
       },
       {
 		image: img,  
@@ -28,7 +30,8 @@ class Movies extends Component {
         title: 'The Godfather: Part II (1974)',
         imdb_rating: "8.5",
         your_rating: false,
-		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>
+		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>,
+		add: <i class="fa fa-plus-circle"></i>
       },
 	  {
 		image: img,  
@@ -36,7 +39,8 @@ class Movies extends Component {
         title: 'The Dark Knight (2008)',
         imdb_rating: "7.5",
         your_rating: false,
-		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>
+		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>,
+		add: <i class="fa fa-plus-circle"></i>
       },
 	  {
 		image: img,  
@@ -44,9 +48,11 @@ class Movies extends Component {
         title: "12 Angry Men (1957)",
         imdb_rating: "6.1",
         your_rating: false,
-		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>
+		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>,
+		add: <i class="fa fa-plus-circle"></i>
       },
     ],
+	cart: []
   };
 
   handleToggleRating = (movieRank) => {
@@ -60,6 +66,13 @@ class Movies extends Component {
 	let movies = [...this.state.movies];
 	movies = movies.filter(movie => movie.rank !== key)
 	this.setState({movies})
+  }
+
+  handleAdd = (key) => {
+	const movies = [...this.state.movies];
+	const movie = movies.find(movie => movie.rank === key)
+	let cart = [...this.state.cart, movie];
+	this.setState({cart})
   }
 
   render() {
@@ -95,15 +108,37 @@ class Movies extends Component {
         path: "action",
         content: (movie, key) => <td> <button onClick={() => this.handleRemove(movie['rank'])}>{movie[key]}</button> </td>,
       },
+	  {
+        label: "Add",
+        path: "add",
+        content: (movie, key) => <td> <button onClick={() => this.handleAdd(movie['rank'])}>{movie[key]}</button> </td>,
+      },
     ];
 	
     return (
       <>
-        <Table
-          data={this.state.movies}
-          columns={columns}
-		  handleRemove={this.handleRemove}
-        ></Table>
+	  	<div style={{display: 'flex'}}>
+			<div className='list-container' 
+			style={{width: '70%',
+					marginLeft: '10px',
+					marginRight: '10px',
+					borderRight: '1px solid gray',
+					paddingRight: '10px'}
+					}>
+				<Table
+				data={this.state.movies}
+				columns={columns}
+				handleRemove={this.handleRemove}
+				></Table>
+			</div>
+			<div className='cart-container'>
+				<h5 style={{marginLeft: '100px', color: 'gray'}}>Watch List</h5>
+				<hr />
+				{
+					this.state.cart.map(movie => <li style={{color: '#136CB2'}}>{movie.title} <br /><br /> </li> )
+				}
+			</div>
+		</div>
       </>
     );
   }
