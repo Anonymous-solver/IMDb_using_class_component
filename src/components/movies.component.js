@@ -1,63 +1,25 @@
 import React, { Component } from "react";
 import Table from "./common/table.component";
 import Rating from "./rating.component";
-import img from '../images/post.png'
+import getMovies from "../service/get-movies.service";
 
 class Movies extends Component {
   state = {
-    movies: [
-      {
-		image: img,  
-        rank: 1,
-        title: "The Shawshank Redemption (1994)",
-        imdb_rating: "9.2",
-        your_rating: false,
-		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>,
-		add: <i class="fa fa-plus-circle"></i>
-      },
-      {
-		image: img,  
-        rank: 2,
-        title: "The Godfather (1972)",
-        imdb_rating: "9.5",
-        your_rating: false,
-		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>,
-		add: <i class="fa fa-plus-circle"></i>
-      },
-      {
-		image: img,  
-        rank: 3,
-        title: 'The Godfather: Part II (1974)',
-        imdb_rating: "8.5",
-        your_rating: false,
-		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>,
-		add: <i class="fa fa-plus-circle"></i>
-      },
-	  {
-		image: img,  
-        rank: 4,
-        title: 'The Dark Knight (2008)',
-        imdb_rating: "7.5",
-        your_rating: false,
-		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>,
-		add: <i class="fa fa-plus-circle"></i>
-      },
-	  {
-		image: img,  
-        rank: 5,
-        title: "12 Angry Men (1957)",
-        imdb_rating: "6.1",
-        your_rating: false,
-		action: <i style = {{borderRadius: '50px', border: '1px solid white'}} className="fa fa-trash-o"></i>,
-		add: <i class="fa fa-plus-circle"></i>
-      },
-    ],
-	cart: []
-  };
+    movies: [],
+	cart: [],
+	ratingCount: 0
+  }
+
+  componentDidMount() {
+	  const movies = getMovies();
+	  this.setState({movies});
+  }
 
   handleToggleRating = (movieRank) => {
 	  const movies = [...this.state.movies];
 	  const movie = movies.find(movie => movie.rank === movieRank)
+	  if (movie.your_rating === false) this.setState({ratingCount: this.state.ratingCount+1})
+	  else this.setState({ratingCount: this.state.ratingCount-1})
 	  movie.your_rating = !(movie.your_rating)
 	  this.setState({movies})
   }
@@ -69,10 +31,19 @@ class Movies extends Component {
   }
 
   handleAdd = (key) => {
+	const cartList = [...this.state.cart];
+	const cartMovie = cartList.find(movie => movie.rank === key)
+	if (cartMovie) return;
 	const movies = [...this.state.movies];
 	const movie = movies.find(movie => movie.rank === key)
 	let cart = [...this.state.cart, movie];
 	this.setState({cart})
+  }
+
+  handleDelete = (key) => {
+	const movies = [...this.state.cart];
+	const movie = movies.filter(movie => movie.rank !== key)
+	this.setState({cart: movie})
   }
 
   render() {
@@ -81,7 +52,7 @@ class Movies extends Component {
 	  {
 		label: "Image",
 		path: "image",
-		content: (movie, key) => <td> <img style={{width: '3rem'}} src={movie[key]} alt="null" /></td>,
+		content: (movie, key) => <td> <img style={{width: '3rem'}} src={movie[key]} alt='null'/></td>,
 	  },
       {
         label: "Rank",
@@ -106,25 +77,20 @@ class Movies extends Component {
       {
         label: "Action",
         path: "action",
-        content: (movie, key) => <td> <button onClick={() => this.handleRemove(movie['rank'])}>{movie[key]}</button> </td>,
+        content: (movie, key) => <td><button style={{borderRadius: '50%', border: '1px solid white'}} className="fa fa-trash-o" onClick={() => this.handleRemove(movie['rank'])}>{movie[key]}</button> </td>,
       },
 	  {
         label: "Add",
         path: "add",
-        content: (movie, key) => <td> <button onClick={() => this.handleAdd(movie['rank'])}>{movie[key]}</button> </td>,
+        content: (movie, key) => <td> <button style={{borderRadius: '50%', border: '1px solid white'}} className="fa fa-plus-circle" onClick={() => this.handleAdd(movie['rank'])}>{movie[key]}</button> </td>,
       },
     ];
 	
     return (
       <>
+	  	{/* <h1>count: {this.state.ratingCount}</h1> */}
 	  	<div style={{display: 'flex'}}>
-			<div className='list-container' 
-			style={{width: '70%',
-					marginLeft: '10px',
-					marginRight: '10px',
-					borderRight: '1px solid gray',
-					paddingRight: '10px'}
-					}>
+			<div className='list-container' style={{width: '70%', marginLeft: '10px', marginRight: '10px', borderRight: '1px solid gray', paddingRight: '10px'}}>
 				<Table
 				data={this.state.movies}
 				columns={columns}
@@ -135,7 +101,7 @@ class Movies extends Component {
 				<h5 style={{marginLeft: '100px', color: 'gray'}}>Watch List</h5>
 				<hr />
 				{
-					this.state.cart.map(movie => <li style={{color: '#136CB2'}}>{movie.title} <br /><br /> </li> )
+					this.state.cart.map(movie => <li style={{color: '#136CB2'}}>{movie.title} <button style={{borderRadius: '50%', border: '1px solid white'}} onClick={() => this.handleDelete(movie['rank'])} className="fa fa-trash-o"></button><br /><br /> </li> )
 				}
 			</div>
 		</div>

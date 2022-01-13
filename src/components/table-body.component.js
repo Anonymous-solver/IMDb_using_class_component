@@ -9,7 +9,6 @@ const TableBody = ({columns, data: rows }) => {
 					<tr>
 						{
 							columns.map(column => {
-								// console.log(row[column])
 								return <React.Fragment key ={column.label}>{column.content(row, column.path)}</React.Fragment>
 							})
 						}
