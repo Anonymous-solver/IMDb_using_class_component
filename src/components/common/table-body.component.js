@@ -1,15 +1,16 @@
 import React from "react";
 
-const TableBody = ({columns, data: rows }) => {
+const TableBody = ({columns, items }) => {
+
   return (
       <tbody>
         {
-			rows.map(row => {
+			items.map(item => {
             	return (
 					<tr>
 						{
 							columns.map(column => {
-								return <React.Fragment key ={column.label}>{column.content(row, column.path)}</React.Fragment>
+								return <React.Fragment key ={column.label}>{column.content(item, column.path)}</React.Fragment>
 							})
 						}
 					</tr>

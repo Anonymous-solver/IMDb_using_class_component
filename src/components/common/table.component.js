@@ -1,11 +1,11 @@
-import TableBody from "../table-body.component";
-import TableHeader from "../table-header.component";
+import TableBody from "./table-body.component";
+import TableHeader from "./table-header.component";
 
-const Table = ({data, columns, handleRemove }) => {
+const Table = ({items, columns, handleRemove, onSort, sortColumn }) => {
 	return ( 
 		<table className="table">
-          <TableHeader columns={columns}></TableHeader>
-          <TableBody data={data} columns = {columns} handleRemove = {handleRemove}></TableBody>
+          <TableHeader columns={columns} onSort={onSort} sortColumn={sortColumn}></TableHeader>
+          <TableBody items={items} columns = {columns} handleRemove = {handleRemove}></TableBody>
 		</table>
 	 );
 }
