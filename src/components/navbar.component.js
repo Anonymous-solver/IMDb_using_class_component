@@ -2,9 +2,6 @@ import React, { Component } from "react";
 import logo from "../images/imdb_logo.png";
 
 class Navbar extends Component {
-	handleSearch = (event) => {
-		console.log(event.target.value);
-	};
 	render() {
 		return (
 			<>
@@ -34,19 +31,12 @@ class Navbar extends Component {
 						</div>
 						<input
 							type="text"
-							onChange={this.handleSearch}
+							onChange={this.props.handleSearch}
+							onKeyDown={this.props.handleEnter}
+							required
 							className="form-control"
 							placeholder="Search IMDb"
-							aria-label="Amount (to the nearest dollar)"
 						/>
-						<div className="input-group-append">
-							<span className="input-group-text">
-								<i
-									style={{ padding: "4px" }}
-									className="fa fa-search"
-								></i>
-							</span>
-						</div>
 					</span>
 				</nav>
 			</>

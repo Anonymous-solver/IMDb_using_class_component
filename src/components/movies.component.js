@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Table from "./common/table.component";
 import Rating from "./rating.component";
 import getMovies from "../service/get-movies.service";
-import getGenres from "../service/get-genres.service";
 import _ from "lodash";
 import Pagination from "./common/pagination.component";
 import Filtering from "./common/filtering.component";
@@ -15,14 +14,11 @@ class Movies extends Component {
 		sortColumn: { path: "rank", order: "asc" },
 		activePage: 1,
 		pageCount: 12,
-		genres: [],
-		selectedGenre: "All Genres",
 	};
 
 	componentDidMount() {
 		const movies = getMovies();
-		const genres = ["All Genres", ...getGenres()];
-		this.setState({ ...this.state, movies, genres });
+		this.setState({ ...this.state, movies });
 	}
 
 	handleToggleRating = (movieRank) => {
@@ -65,10 +61,6 @@ class Movies extends Component {
 		this.setState({ ...this.state, activePage });
 	};
 
-	handleClickFilter = (selectedGenre) => {
-		this.setState({ ...this.state, selectedGenre });
-	};
-
 	paginateMovies = (movies) => {
 		const { activePage, pageCount } = this.state;
 		const start = (activePage - 1) * pageCount;
@@ -77,7 +69,8 @@ class Movies extends Component {
 	};
 
 	filterMovies = () => {
-		const { movies, selectedGenre } = this.state;
+		const { selectedGenre } = this.props;
+		const { movies } = this.state;
 		const filteredMovies = movies.filter((movie) => {
 			if (selectedGenre === "All Genres") return true;
 
@@ -98,6 +91,7 @@ class Movies extends Component {
 	};
 
 	render() {
+		const { selectedGenre, handleClickFilter, genres } = this.props;
 		const filteredMovies = this.filterMovies();
 		const paginatedMovies = this.paginateMovies(filteredMovies);
 		const movies = this.sortMovies(paginatedMovies);
@@ -202,9 +196,9 @@ class Movies extends Component {
 				<div style={{ display: "flex" }}>
 					<div className="genres-container" style={{ width: "20%" }}>
 						<Filtering
-							items={this.state.genres}
-							selectedGenre={this.state.selectedGenre}
-							onClickFilter={this.handleClickFilter}
+							items={genres}
+							selectedGenre={selectedGenre}
+							onClickFilter={handleClickFilter}
 						></Filtering>
 					</div>
 
