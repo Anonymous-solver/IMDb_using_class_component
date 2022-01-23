@@ -16,13 +16,13 @@ const Pagination = ({totalItems, pageCount, activePage, onClickPage }) => {
             {
                 pages.map(page => {
                     return(
-                        <>
+                        <div key={page}>
                             <li onClick={() => onClickPage(page)} className= {page === activePage ? 'page-item active' : 'page-item'}>
                                 <a className="page-link">
                                 {page}
                                 </a>
                             </li>
-                        </>
+                        </div>
                     )
                 })
             }

@@ -27,6 +27,7 @@ const TableHeader = ({ columns, sortColumn, onSort }) => {
 				{columns.map((column) => {
 					return (
 						<th
+							key={column.label}
 							style={{ color: "gray" }}
 							onClick={() => handleSort(column)}
 						>

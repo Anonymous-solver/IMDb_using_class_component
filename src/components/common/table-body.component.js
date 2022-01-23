@@ -5,10 +5,10 @@ const TableBody = ({ columns, items }) => {
 		<tbody>
 			{items.map((item) => {
 				return (
-					<tr>
+					<tr key={item.rank}>
 						{columns.map((column) => {
 							return (
-								<React.Fragment key={column.label}>
+								<React.Fragment key={column.path}>
 									{column.content(item, column.path)}
 								</React.Fragment>
 							);

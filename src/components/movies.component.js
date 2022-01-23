@@ -34,7 +34,7 @@ class Movies extends Component {
 	handleRemove = (key) => {
 		let movies = [...this.state.movies];
 		movies = movies.filter((movie) => movie.rank !== key);
-		this.setState({ movies });
+		this.setState({ ...this.state, movies });
 	};
 
 	handleAdd = (key) => {
@@ -44,13 +44,13 @@ class Movies extends Component {
 		const movies = [...this.state.movies];
 		const movie = movies.find((movie) => movie.rank === key);
 		let cart = [...this.state.cart, movie];
-		this.setState({ cart });
+		this.setState({...this.state, cart });
 	};
 
 	handleDelete = (key) => {
 		const movies = [...this.state.cart];
 		const movie = movies.filter((movie) => movie.rank !== key);
-		this.setState({ cart: movie });
+		this.setState({ ...this.state, cart: movie });
 	};
 
 	handleSort = (sortColumn) => {

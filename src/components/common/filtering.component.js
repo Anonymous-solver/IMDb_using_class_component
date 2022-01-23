@@ -4,7 +4,7 @@ const Filtering = ({ items, selectedGenre, onClickFilter }) => {
 			<ul className="list-group">
 				{items.map((item) => {
 					return (
-						<>
+						<div key={item}>
 							<li
 								onClick={() => onClickFilter(item)}
 								className={
@@ -15,7 +15,7 @@ const Filtering = ({ items, selectedGenre, onClickFilter }) => {
 							>
 								{item}
 							</li>
-						</>
+						</div>
 					);
 				})}
 			</ul>
