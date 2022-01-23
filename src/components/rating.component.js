@@ -25,13 +25,6 @@ class Rating extends Component {
 	render() { 
 		const {handleToggleRating, rank, isRated} = this.props;
 		return (
-			// <>
-			// 	<i 
-			// 		onMouseOver={this.handleHover} 
-			// 	    onMouseOut={this.handleOut}
-			// 		onClick={() => handleToggleRating(rank)} 
-			// 		className={this.getClassName()}></i>
-			// </>
 			<>
 				<i onMouseOver={this.handleHover} onMouseOut={this.handleOut} onClick={() => handleToggleRating(rank)}><Star isRated={isRated}></Star></i>
 			</>
